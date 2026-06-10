@@ -1,0 +1,35 @@
+name: Atualizar dados CONAB
+
+on:
+  schedule:
+    - cron: '0 12 * * *'   # 9h BRT (UTC-3) = 12h UTC
+  workflow_dispatch:        # permite rodar manualmente para testar
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r requirements.txt
+
+      - name: Baixar XLSX da CONAB
+        run: python conab/baixar_conab.py
+
+      - name: Formatar CSV (ETL)
+        run: python conab/etl_conab.py
+
+      - name: Commitar alterações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add conab/raw/ conab_atual.csv
+          git diff --staged --quiet || git commit -m "Atualização CONAB $(date +'%Y-%m-%d')"
+          git push

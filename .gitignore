@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.env
+
+# XLSX — ignorar todos por padrão, exceto o XLSX atual da CONAB
+*.xlsx
+!conab/raw/conab_atual.xlsx
+
+# Arquivos temporários e sistema
+*.zip
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Shapefiles (muito grandes para o repositório)
+BR_Municipios_2025/
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.qmd
+
+# Pasta de trabalho local (scripts e arquivos transitórios)
+Arquivos automatização/
+
+# Arquivos Power BI (binários pesados — versionar separado se necessário)
+*.pbix
